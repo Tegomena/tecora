@@ -1,7 +1,7 @@
 [project]
 name = "tecora"
 version = "0.1.0"
-description = "Add your description here"
+description = "A Python library for analyzing large text corpora"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = []
