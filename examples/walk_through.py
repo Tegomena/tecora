@@ -5,16 +5,15 @@ if __name__ == "__main__":
 
     subcorpora = wp.getFiles(sys.argv[1])
 
-    # Iteration über alle Dateien:
+    # Iterate over all files:
     for subcorpus in subcorpora:
         print("Subcorpus: " + subcorpus)
-        # Erstellen des Subcorpus-Objekts, Einlesen der Datei:
+        # Create the Subcorpus object, read the file:
         sub = wp.Subcorpus(subcorpus)
-        # Iteration über die Artikel im Subcorpus:
-        for a in sub.artikel:
-            for s in a.saetze:
+        # Iterate over the articles in the subcorpus:
+        for a in sub.articles:
+            for s in a.sentences:
                 for t in s.tokens:
                     print(t)
                 
-
     print("Done.")

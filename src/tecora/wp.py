@@ -51,7 +51,7 @@ class Subcorpus:
     """
 
     def __init__(self, filename: str) -> None:
-        self.artikel: list[Article] = []
+        self.articles: list[Article] = []
         infile = open(filename, "r", encoding='utf-8')
         lines = infile.readlines()
         infile.close()
@@ -68,7 +68,7 @@ class Subcorpus:
                 title = re.findall(reg, line)[0]
                 a = Article(title)
             elif line.startswith('</doc'):
-                self.artikel.append(a)
+                self.articles.append(a)
                 artikelCounter = artikelCounter + 1
             elif line.startswith('<s'):
                 satzCounter = satzCounter + 1
@@ -82,9 +82,14 @@ class Subcorpus:
 
 
 if __name__ == "__main__":
-    c = Subcorpus("wiki_00")
+    """
+    An example of how to use the Subcorpus class to read a file and print the articles, sentences and tokens. Change PATH_TO_A_WP_FILE to the path of a file in the wp corpus on your computer.
+    """
+    
+    PATH_TO_A_WP_FILE = "D:/wp-2022/AA/wiki_00"
+    c = Subcorpus(PATH_TO_A_WP_FILE)
 
-    for a in c.artikel:
+    for a in c.articles:
         print("Titel: ", a.titel)
         print("Anzahl Sätze: ", len(a.sentences))
         print("Erster Satz: ")

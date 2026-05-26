@@ -1,0 +1,3 @@
+import tecora
+
+print("Done.")
