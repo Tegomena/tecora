@@ -41,8 +41,8 @@ class Article:
     """
     An article has a title and a list of sentences.
     """
-    def __init__(self, titel: str) -> None:
-        self.titel = titel
+    def __init__(self, title: str) -> None:
+        self.title = title
         self.sentences: list[Sentence] = []
 
 class Subcorpus:

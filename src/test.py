@@ -1,3 +1,0 @@
-import tecora
-
-print("Done.")
