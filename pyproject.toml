@@ -1,9 +1,19 @@
 [project]
 name = "tecora"
-version = "0.1.1"
+version = "0.1.2"
 description = "A Python library for analyzing large text corpora"
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.12"
 dependencies = [
-    "spacy>=3.0",
+    "spacy>=3.0", "tecora" ]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/tecora"]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.3",
 ]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]

@@ -40,16 +40,28 @@ python -m tecora.texts2wp <inputdir> <outputdir> <spacymodel>
 
 ### Reading an annotated corpus
 
+The subfolder "examples" contains some easy to understand examples scripts how to use the Tecora library. The script "walk_through.py" is a good starting point to understand the functionality of the library:
+
 ```python
-from tecora.wp import Subcorpus
+import tecora.wp as wp
+import sys
 
-corpus = Subcorpus("path/to/annotated_file")
+if __name__ == "__main__":
 
-for article in corpus.artikel:
-    print(article.titel)
-    for sentence in article.saetze:
-        for token in sentence.tokens:
-            print(token.text, token.pos, token.lemma)
+    subcorpora = wp.getFiles(sys.argv[1])
+
+    # Iterate over all files:
+    for subcorpus in subcorpora:
+        print("Subcorpus: " + subcorpus)
+        # Create the Subcorpus object, read the file:
+        sub = wp.Subcorpus(subcorpus)
+        # Iterate over the articles in the subcorpus:
+        for a in sub.articles:
+            for s in a.sentences:
+                for t in s.tokens:
+                    print(t)
+                
+    print("Done.")
 ```
 
 ## Installation
