@@ -1,4 +1,5 @@
 stages:
+  - test
   - build
   - publish
 
@@ -11,6 +12,16 @@ variables:
 .install_uv: &install_uv
   before_script:
     - pip install --quiet uv
+
+test:
+  stage: test
+  <<: *install_uv
+  cache:
+    key: uv-$CI_COMMIT_REF_SLUG
+    paths:
+      - .uv-cache/
+  script:
+    - uv run --group dev pytest tests/test_wp.py
 
 build:
   stage: build
