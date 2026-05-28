@@ -1,0 +1,44 @@
+stages:
+  - build
+  - publish
+
+default:
+  image: python:3.12-slim
+
+variables:
+  UV_CACHE_DIR: .uv-cache
+
+.install_uv: &install_uv
+  before_script:
+    - pip install --quiet uv
+
+build:
+  stage: build
+  <<: *install_uv
+  cache:
+    key: uv-$CI_COMMIT_REF_SLUG
+    paths:
+      - .uv-cache/
+  script:
+    - uv build
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 1 hour
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+
+publish:
+  stage: publish
+  <<: *install_uv
+  needs:
+    - job: build
+      artifacts: true
+  script:
+    - uv publish
+        --publish-url "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi"
+        --username gitlab-ci-token
+        --password "${CI_JOB_TOKEN}"
+        dist/*
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
