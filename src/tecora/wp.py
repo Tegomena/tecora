@@ -30,6 +30,27 @@ class Sentence:
     def __init__(self) -> None:
         self.tokens: list[Token] = []
 
+    def findPhrase(self, phrase: list[str], use: str = "text", case: bool = False) -> int | None:
+        """
+        Returns the index of the first token of the phrase if found in exact
+        order, or None if not found. use="text" matches against token text,
+        use="lemma" matches against token lemma. If case is True, both the
+        token values and the phrase are uppercased before comparison.
+        """
+        if use not in ("text", "lemma"):
+            raise ValueError("use must be 'text' or 'lemma'")
+        if not phrase:
+            return None
+        values = [getattr(t, use) for t in self.tokens]
+        if case:
+            values = [v.upper() for v in values]
+            phrase = [p.upper() for p in phrase]
+        n = len(phrase)
+        for i in range(len(values) - n + 1):
+            if values[i:i + n] == phrase:
+                return i
+        return None
+
     # nicht unbedingt nötig, aber nice to have:
     def __str__(self) -> str:
         temp = ""

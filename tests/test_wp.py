@@ -33,6 +33,49 @@ class TestSentence:
         s.tokens.append(Token("Haus", "Haus", "NOUN"))
         assert str(s) == "Das das DETHaus Haus NOUN"
 
+    @pytest.fixture
+    def sentence(self):
+        s = Sentence()
+        s.tokens.append(Token("Das", "das", "DET"))
+        s.tokens.append(Token("alte", "alt", "ADJ"))
+        s.tokens.append(Token("Haus", "Haus", "NOUN"))
+        s.tokens.append(Token("steht", "stehen", "VERB"))
+        return s
+
+    def test_findPhrase_found_by_text(self, sentence):
+        assert sentence.findPhrase(["alte", "Haus"]) == 1
+
+    def test_findPhrase_found_at_start(self, sentence):
+        assert sentence.findPhrase(["Das", "alte"]) == 0
+
+    def test_findPhrase_single_token(self, sentence):
+        assert sentence.findPhrase(["steht"]) == 3
+
+    def test_findPhrase_not_found(self, sentence):
+        assert sentence.findPhrase(["altes", "Haus"]) is None
+
+    def test_findPhrase_wrong_order(self, sentence):
+        assert sentence.findPhrase(["Haus", "alte"]) is None
+
+    def test_findPhrase_by_lemma(self, sentence):
+        assert sentence.findPhrase(["alt", "Haus"], use="lemma") == 1
+
+    def test_findPhrase_lemma_not_found(self, sentence):
+        assert sentence.findPhrase(["alte", "Haus"], use="lemma") is None
+
+    def test_findPhrase_case_insensitive(self, sentence):
+        assert sentence.findPhrase(["ALTE", "HAUS"], case=True) == 1
+
+    def test_findPhrase_case_insensitive_phrase_lowercased(self, sentence):
+        assert sentence.findPhrase(["das", "alte"], case=True) == 0
+
+    def test_findPhrase_empty_phrase(self, sentence):
+        assert sentence.findPhrase([]) is None
+
+    def test_findPhrase_invalid_use(self, sentence):
+        with pytest.raises(ValueError):
+            sentence.findPhrase(["Haus"], use="pos")
+
 
 class TestArticle:
     def test_title(self):
