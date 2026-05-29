@@ -23,6 +23,11 @@ class Token:
     def __str__(self) -> str:
         return self.text + " " + self.lemma + " " + self.pos
 
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, Token):
+            return NotImplemented
+        return self.text == other.text and self.lemma == other.lemma and self.pos == other.pos
+
 class Sentence:
     """
     A sentence is a list of tokens.
@@ -51,7 +56,11 @@ class Sentence:
                 return i
         return None
 
-    # nicht unbedingt nötig, aber nice to have:
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, Sentence):
+            return NotImplemented
+        return self.tokens == other.tokens
+
     def __str__(self) -> str:
         temp = ""
         for t in self.tokens:

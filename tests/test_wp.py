@@ -76,6 +76,37 @@ class TestSentence:
         with pytest.raises(ValueError):
             sentence.findPhrase(["Haus"], use="pos")
 
+    def test_eq_equal_sentences(self):
+        s1 = Sentence()
+        s1.tokens.append(Token("Das", "das", "DET"))
+        s1.tokens.append(Token("Haus", "Haus", "NOUN"))
+        s2 = Sentence()
+        s2.tokens.append(Token("Das", "das", "DET"))
+        s2.tokens.append(Token("Haus", "Haus", "NOUN"))
+        assert s1 == s2
+
+    def test_eq_different_tokens(self):
+        s1 = Sentence()
+        s1.tokens.append(Token("Das", "das", "DET"))
+        s2 = Sentence()
+        s2.tokens.append(Token("Ein", "ein", "DET"))
+        assert s1 != s2
+
+    def test_eq_different_length(self):
+        s1 = Sentence()
+        s1.tokens.append(Token("Das", "das", "DET"))
+        s2 = Sentence()
+        s2.tokens.append(Token("Das", "das", "DET"))
+        s2.tokens.append(Token("Haus", "Haus", "NOUN"))
+        assert s1 != s2
+
+    def test_eq_empty_sentences(self):
+        assert Sentence() == Sentence()
+
+    def test_eq_not_implemented_for_other_types(self):
+        s = Sentence()
+        assert s.__eq__("not a sentence") is NotImplemented
+
 
 class TestArticle:
     def test_title(self):
